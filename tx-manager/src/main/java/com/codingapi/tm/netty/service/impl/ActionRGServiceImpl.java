@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 /**
  * 强制回滚事务组
  * create by lorne on 2017/11/11
+ * @author wangyijie
  */
 @Service(value = "rg")
 public class ActionRGServiceImpl implements IActionService{
-
 
     @Autowired
     private TxManagerService txManagerService;

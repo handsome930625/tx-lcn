@@ -7,7 +7,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
 
 /**
- * Created by lorne on 2017/7/6.
+ *
+ * @author lorne
+ * @date 2017/7/6
  */
 public class SocketUtils {
 

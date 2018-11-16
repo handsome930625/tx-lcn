@@ -26,25 +26,22 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by lorne on 2017/6/30.
+ *
+ * @author lorne
+ * @date 2017/6/30
  */
 @Service
 public class NettyServiceImpl implements NettyService ,DisposableBean {
 
-
     @Autowired
     private NettyDistributeService nettyDistributeService;
-
 
     @Autowired
     private NettyControlService nettyControlService;
 
-
     private EventLoopGroup workerGroup;
 
-
     private static volatile boolean isStarting = false;
-
 
     private Logger logger = LoggerFactory.getLogger(NettyServiceImpl.class);
 

@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * create by lorne on 2017/8/22
+ * @author wangyijie
  */
 public class TaskGroupManager {
 

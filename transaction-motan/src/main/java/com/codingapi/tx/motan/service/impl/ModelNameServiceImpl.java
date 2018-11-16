@@ -28,15 +28,18 @@ public class ModelNameServiceImpl implements ModelNameService {
 
     private String host = null;
 
+    @Override
     public String getModelName() {
         return environment.getProperty("tx.application");
     }
 
+    @Override
     public String getUniqueKey() {
         String address = getIp() + getPort();
         return MD5Util.md5(address.getBytes());
     }
 
+    @Override
     public String getIpAddress() {
         String address = getIp() + ":" + getPort();
         return address;

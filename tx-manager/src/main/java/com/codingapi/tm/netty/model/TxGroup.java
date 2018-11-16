@@ -11,32 +11,39 @@ import java.util.List;
  * Created by lorne on 2017/6/7.
  */
 public class TxGroup {
-
+    /**
+     * 事务组id
+     */
     private String groupId;
-
+    /**
+     * 创建时间 就是事务开始时间
+     */
     private long startTime;
-
+    /**
+     * 现在时间
+     */
     private long nowTime;
-
+    /**
+     * 事务状态
+     */
     private int state;
-
+    /**
+     * 是否结束 0 未结束 1 已结束
+     */
     private int hasOver;
-
     /**
      * 补偿请求
      */
     private int isCompensate;
-
-
     /**
      * 是否强制回滚(1:开启，0:关闭)
      */
-    private int rollback = 0 ;
+    private int rollback = 0;
 
     private List<TxInfo> list;
 
     public TxGroup() {
-        list = new ArrayList<TxInfo>();
+        list = new ArrayList<>();
     }
 
     public String getGroupId() {
@@ -138,7 +145,6 @@ public class TxGroup {
                 txGroup.getList().add(info);
             }
             return txGroup;
-
         } catch (Exception e) {
             return null;
         }
@@ -153,8 +159,8 @@ public class TxGroup {
         jsonObject.put("s", getState());
         jsonObject.put("i", getIsCompensate());
         jsonObject.put("r", getRollback());
-        jsonObject.put("o",getHasOver());
-        if(noList) {
+        jsonObject.put("o", getHasOver());
+        if (noList) {
             JSONArray jsonArray = new JSONArray();
             for (TxInfo info : getList()) {
                 JSONObject item = new JSONObject();
@@ -168,7 +174,6 @@ public class TxGroup {
                 item.put("mn", info.getModel());
                 item.put("ip", info.getModelIpAddress());
                 item.put("ms", info.getMethodStr());
-
 
                 jsonArray.add(item);
             }

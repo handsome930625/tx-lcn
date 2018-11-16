@@ -10,10 +10,10 @@ import java.net.UnknownHostException;
 
 /**
  * create by lorne on 2017/8/7
+ * @author wangyijie
  */
 @Component
 public class ApplicationStartListener implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {
-
 
     @Override
     public void onApplicationEvent(EmbeddedServletContainerInitializedEvent event) {
@@ -21,8 +21,6 @@ public class ApplicationStartListener implements ApplicationListener<EmbeddedSer
         String ip = getIp();
         Constants.address = ip+":"+serverPort;
     }
-
-
 
     private String getIp(){
         String host = null;

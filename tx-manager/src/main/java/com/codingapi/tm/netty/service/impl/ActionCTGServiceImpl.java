@@ -8,20 +8,21 @@ import org.springframework.stereotype.Service;
 
 /**
  * 关闭事务组
+ * TODO read again
  * create by lorne on 2017/11/11
+ *
+ * @author wangyijie
  */
 @Service(value = "ctg")
-public class ActionCTGServiceImpl implements IActionService{
-
+public class ActionCTGServiceImpl implements IActionService {
 
     @Autowired
     private TxManagerService txManagerService;
 
     @Override
-    public String execute(String channelAddress, String key, JSONObject params ) {
+    public String execute(String channelAddress, String key, JSONObject params) {
         String groupId = params.getString("g");
         int state = params.getInteger("s");
-        String res = String.valueOf(txManagerService.closeTransactionGroup(groupId,state));
-        return res;
+        return String.valueOf(txManagerService.closeTransactionGroup(groupId, state));
     }
 }

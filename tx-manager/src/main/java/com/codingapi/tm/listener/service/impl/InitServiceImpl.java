@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * Created by lorne on 2017/7/4.
+ * 初始化 netty、config
+ *
+ * @author lorne
+ * @date 2017/7/4
  */
 @Service
 public class InitServiceImpl implements InitService {
@@ -20,11 +23,9 @@ public class InitServiceImpl implements InitService {
     @Autowired
     private ConfigReader configReader;
 
-
     @Override
     public void start() {
-        /**加载本地服务信息**/
-
+        /*加载本地服务信息**/
         Constants.socketPort = configReader.getSocketPort();
         Constants.maxConnection = configReader.getSocketMaxConnection();
         nettyServerService.start();

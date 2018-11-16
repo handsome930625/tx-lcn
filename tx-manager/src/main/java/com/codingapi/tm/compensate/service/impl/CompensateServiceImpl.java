@@ -56,14 +56,14 @@ public class CompensateServiceImpl implements CompensateService {
     @Override
     public boolean saveCompensateMsg(final TransactionCompensateMsg transactionCompensateMsg) {
 
-        TxGroup txGroup =managerService.getTxGroup(transactionCompensateMsg.getGroupId());
+        TxGroup txGroup = managerService.getTxGroup(transactionCompensateMsg.getGroupId());
         if (txGroup == null) {
             //仅发起方异常，其他模块正常
             txGroup = new TxGroup();
             txGroup.setNowTime(System.currentTimeMillis());
             txGroup.setGroupId(transactionCompensateMsg.getGroupId());
             txGroup.setIsCompensate(1);
-        }else {
+        } else {
             managerService.deleteTxGroup(txGroup);
         }
 
@@ -104,9 +104,6 @@ public class CompensateServiceImpl implements CompensateService {
         });
 
         return StringUtils.isNotEmpty(compensateKey);
-
-
-
     }
 
     @Override
@@ -115,7 +112,7 @@ public class CompensateServiceImpl implements CompensateService {
         logger.info("Auto Compensate->" + json);
         //自动补偿业务执行...
         final int tryTime = configReader.getCompensateTryTime();
-        boolean autoExecuteRes = false;
+        boolean autoExecuteRes;
         try {
             int executeCount = 0;
             autoExecuteRes = _executeCompensate(json);
@@ -123,7 +120,7 @@ public class CompensateServiceImpl implements CompensateService {
             while (!autoExecuteRes) {
                 logger.info("Compensate Failure, Entering Compensate Queue->" + autoExecuteRes + ",json->" + json);
                 executeCount++;
-                if(executeCount==3){
+                if (executeCount == 3) {
                     autoExecuteRes = false;
                     break;
                 }
@@ -136,12 +133,12 @@ public class CompensateServiceImpl implements CompensateService {
             }
 
             //执行成功删除数据
-            if(autoExecuteRes) {
+            if (autoExecuteRes) {
                 compensateDao.deleteCompensateByKey(compensateKey);
             }
 
-        }catch (Exception e){
-            logger.error("Auto Compensate Fails,msg:"+e.getLocalizedMessage());
+        } catch (Exception e) {
+            logger.error("Auto Compensate Fails,msg:" + e.getLocalizedMessage());
             //推送数据给第三方通知
             autoExecuteRes = false;
         }
@@ -149,9 +146,9 @@ public class CompensateServiceImpl implements CompensateService {
         //执行补偿以后通知给业务方
         String groupId = transactionCompensateMsg.getGroupId();
         JSONObject requestJson = new JSONObject();
-        requestJson.put("action","notify");
-        requestJson.put("groupId",groupId);
-        requestJson.put("resState",autoExecuteRes);
+        requestJson.put("action", "notify");
+        requestJson.put("groupId", groupId);
+        requestJson.put("resState", autoExecuteRes);
 
         String url = configReader.getCompensateNotifyUrl();
         logger.error("Compensate Result Callback Address->" + url);
@@ -161,26 +158,25 @@ public class CompensateServiceImpl implements CompensateService {
     }
 
 
-
     @Override
     public List<ModelName> loadModelList() {
-        List<String> keys =  compensateDao.loadCompensateKeys();
+        List<String> keys = compensateDao.loadCompensateKeys();
 
-        Map<String,Integer> models = new HashMap<String, Integer>();
+        Map<String, Integer> models = new HashMap<String, Integer>();
 
-        for(String key:keys){
-            if(key.length()>36){
-                String name =  key.substring(11,key.length()-25);
+        for (String key : keys) {
+            if (key.length() > 36) {
+                String name = key.substring(11, key.length() - 25);
                 int v = 1;
-                if(models.containsKey(name)){
-                    v =  models.get(name)+1;
+                if (models.containsKey(name)) {
+                    v = models.get(name) + 1;
                 }
-                models.put(name,v);
+                models.put(name, v);
             }
         }
         List<ModelName> names = new ArrayList<>();
 
-        for(String key:models.keySet()){
+        for (String key : models.keySet()) {
             int v = models.get(key);
             ModelName modelName = new ModelName();
             modelName.setName(key);
@@ -248,7 +244,7 @@ public class CompensateServiceImpl implements CompensateService {
         TxGroup compensateGroup = getCompensateByGroupId(txGroup.getGroupId());
         if (compensateGroup != null) {
 
-            if(compensateGroup.getList() != null && !compensateGroup.getList().isEmpty()){
+            if (compensateGroup.getList() != null && !compensateGroup.getList().isEmpty()) {
                 //引用集合 iterator，方便匹配后剔除列表
                 Iterator<TxInfo> iterator = Lists.newArrayList(compensateGroup.getList()).iterator();
                 for (TxInfo txInfo : txGroup.getList()) {
@@ -271,16 +267,17 @@ public class CompensateServiceImpl implements CompensateService {
                         }
                     }
                 }
-            }else{//当没有List数据只记录了补偿数据时，理解问仅发起方提交其他均回滚
+            } else {//当没有List数据只记录了补偿数据时，理解问仅发起方提交其他均回滚
                 for (TxInfo txInfo : txGroup.getList()) {
                     //本次回滚
                     txInfo.setIsCommit(0);
                 }
             }
         }
-        logger.info("Compensate Loaded->"+JSON.toJSONString(txGroup));
+        logger.info("Compensate Loaded->" + JSON.toJSONString(txGroup));
     }
 
+    @Override
     public TxGroup getCompensateByGroupId(String groupId) {
         String json = compensateDao.getCompensateByGroupId(groupId);
         if (json == null) {
@@ -327,9 +324,9 @@ public class CompensateServiceImpl implements CompensateService {
 
         String groupId = jsonObject.getString("groupId");
 
-        String res = managerSenderService.sendCompensateMsg(modelInfo.getChannelName(), groupId, data,startError);
+        String res = managerSenderService.sendCompensateMsg(modelInfo.getChannelName(), groupId, data, startError);
 
-        logger.debug("executeCompensate->"+json+",@@->"+res);
+        logger.debug("executeCompensate->" + json + ",@@->" + res);
 
         return "1".equals(res);
     }

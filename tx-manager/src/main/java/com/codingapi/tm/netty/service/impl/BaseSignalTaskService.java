@@ -7,6 +7,7 @@ import com.lorne.core.framework.utils.task.Task;
 
 /**
  * create by lorne on 2017/11/13
+ * @author wangyijie
  */
 public class BaseSignalTaskService {
 

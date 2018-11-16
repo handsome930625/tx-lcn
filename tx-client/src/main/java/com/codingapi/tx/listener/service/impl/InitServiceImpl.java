@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by yuliang on 2017/7/11.
+ * 启动netty
+ *
+ * @author yuliang
+ * @date 2017/7/11
  */
 @Service
 public class InitServiceImpl implements InitService {

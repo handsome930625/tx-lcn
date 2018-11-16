@@ -7,14 +7,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * create by lorne on 2017/11/13
+ * @author wangyijie
  */
 public class ModelInfoManager {
 
-
-    private List<ModelInfo> modelInfos = new CopyOnWriteArrayList<ModelInfo>();
+    private List<ModelInfo> modelInfos = new CopyOnWriteArrayList<>();
 
     private static ModelInfoManager manager = null;
-
 
     public static ModelInfoManager getInstance() {
         if (manager == null) {
@@ -35,18 +34,17 @@ public class ModelInfoManager {
         }
     }
 
-
-    public void addModelInfo(ModelInfo minfo) {
+    public void addModelInfo(ModelInfo mInfo) {
         for (ModelInfo modelInfo : modelInfos) {
-            if (minfo.getChannelName().equalsIgnoreCase(modelInfo.getChannelName())) {
+            if (mInfo.getChannelName().equalsIgnoreCase(modelInfo.getChannelName())) {
                 return;
             }
 
-            if (minfo.getIpAddress().equalsIgnoreCase(modelInfo.getIpAddress())) {
+            if (mInfo.getIpAddress().equalsIgnoreCase(modelInfo.getIpAddress())) {
                 return;
             }
         }
-        modelInfos.add(minfo);
+        modelInfos.add(mInfo);
     }
 
     public List<ModelInfo> getOnlines() {

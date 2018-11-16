@@ -3,18 +3,17 @@ package com.codingapi.tx;
 import com.codingapi.tx.model.TxServer;
 
 /**
- * Created by lorne on 2017/6/8.
+ *
+ * @author lorne
+ * @date 2017/6/8
  */
 public class Constants {
 
-
     public static volatile boolean hasExit = false;
-
     /**
      * tm 服务对象
      */
     public static TxServer txServer;
-
     /**
      * 主切面的 order值
      * 主切面一定要在 @Transaction 切面的外层（ASPECT_ORDER 小于 <tx:annotation-driven>标签中的order ）

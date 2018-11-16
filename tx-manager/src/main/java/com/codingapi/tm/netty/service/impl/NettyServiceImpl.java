@@ -8,15 +8,17 @@ import org.springframework.stereotype.Service;
 
 /**
  * create by lorne on 2017/11/11
+ *
+ * @author wangyijie
  */
 @Service
-public class NettyServiceImpl implements NettyService{
+public class NettyServiceImpl implements NettyService {
 
     @Autowired
     private ApplicationContext spring;
 
     @Override
     public IActionService getActionService(String action) {
-        return spring.getBean(action,IActionService.class);
+        return spring.getBean(action, IActionService.class);
     }
 }

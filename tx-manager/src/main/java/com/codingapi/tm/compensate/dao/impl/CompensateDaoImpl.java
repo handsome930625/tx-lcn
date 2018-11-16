@@ -13,18 +13,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 补偿机制的查询类
  * create by lorne on 2017/11/11
+ *
+ * @author wangyijie
  */
 @Service
 public class CompensateDaoImpl implements CompensateDao {
-
 
     @Autowired
     private RedisServerService redisServerService;
 
     @Autowired
     private ConfigReader configReader;
-
 
     @Override
     public String saveCompensateMsg(TransactionCompensateMsg transactionCompensateMsg) {
@@ -57,9 +58,9 @@ public class CompensateDaoImpl implements CompensateDao {
     public List<String> loadCompensateTimes(String model) {
         String key = configReader.getKeyPrefixCompensate() + model + ":*";
         List<String> keys = redisServerService.getKeys(key);
-        List<String> times = new ArrayList<String>();
+        List<String> times = new ArrayList<>();
         for (String k : keys) {
-            if(k.length()>36) {
+            if (k.length() > 36) {
                 String time = k.substring(k.length() - 24, k.length() - 14);
                 if (!times.contains(time)) {
                     times.add(time);
@@ -74,8 +75,7 @@ public class CompensateDaoImpl implements CompensateDao {
     public List<String> loadCompensateByModelAndTime(String path) {
         String key = String.format("%s%s*", configReader.getKeyPrefixCompensate(), path);
         List<String> keys = redisServerService.getKeys(key);
-        List<String> values = redisServerService.getValuesByKeys(keys);
-        return values;
+        return redisServerService.getValuesByKeys(keys);
     }
 
     @Override

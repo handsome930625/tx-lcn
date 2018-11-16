@@ -28,16 +28,21 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by lorne on 2017/6/30.
+ * netty 启动类
+ *
+ * @author lorne
+ * @date 2017/6/30
  */
 @Service
-public class NettyServerServiceImpl implements NettyServerService,DisposableBean {
+public class NettyServerServiceImpl implements NettyServerService, DisposableBean {
 
+    private Logger logger = LoggerFactory.getLogger(NettyServerServiceImpl.class);
 
     @Autowired
     private NettyService nettyService;
 
-    private Logger logger = LoggerFactory.getLogger(NettyServerServiceImpl.class);
+    @Autowired
+    private ConfigReader configReader;
 
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
@@ -46,15 +51,12 @@ public class NettyServerServiceImpl implements NettyServerService,DisposableBean
 
     private ExecutorService threadPool = Executors.newFixedThreadPool(100);
 
-    @Autowired
-    private ConfigReader configReader;
-
-
     @Override
     public void start() {
-        final int heartTime = configReader.getTransactionNettyHeartTime()+10;
-        txCoreServerHandler = new TxCoreServerHandler(threadPool,nettyService);
-        bossGroup = new NioEventLoopGroup(50); // (1)
+        final int heartTime = configReader.getTransactionNettyHeartTime() + 10;
+        txCoreServerHandler = new TxCoreServerHandler(threadPool, nettyService);
+        // (1)
+        bossGroup = new NioEventLoopGroup(50);
         workerGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
@@ -77,11 +79,16 @@ public class NettyServerServiceImpl implements NettyServerService,DisposableBean
             // Start the server.
             b.bind(Constants.socketPort);
             logger.info("Socket started on port(s): " + Constants.socketPort + " (socket)");
-
         } catch (Exception e) {
             // Shut down all event loops to terminate all threads.
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        close();
+        threadPool.shutdown();
     }
 
     @Override
@@ -92,12 +99,5 @@ public class NettyServerServiceImpl implements NettyServerService,DisposableBean
         if (bossGroup != null) {
             bossGroup.shutdownGracefully();
         }
-
-    }
-
-    @Override
-    public void destroy() throws Exception {
-        close();
-        threadPool.shutdown();
     }
 }

@@ -5,63 +5,52 @@ import com.codingapi.tm.model.ChannelSender;
 import com.lorne.core.framework.model.JsonModel;
 
 /**
- * Created by lorne on 2017/6/7.
+ *
+ * @author lorne
+ * @date 2017/6/7
  */
 public class TxInfo extends JsonModel {
-
     /**
      * 任务唯一标示
      */
     private String kid;
-
     /**
      * 模块管道名称（netty管道名称）
      */
     private String channelAddress;
-
     /**
      * 是否通知成功
      */
     private int notify;
-
     /**
      * 0 不组合
      * 1 组合
      */
     private int isGroup;
-
     /**
      * tm识别标示
      */
     private String address;
-
     /**
      * tx识别标示
      */
     private String uniqueKey;
-
-
     /**
      * 管道发送数据
      */
     private ChannelSender channel;
-
-
     /**
      * 业务方法名称
      */
     private String methodStr;
-
     /**
      * 模块名称
      */
     private String model;
-
     /**
      * 模块地址
      */
     private String modelIpAddress;
-
     /**
      * 是否提交（临时数据）
      */

@@ -9,25 +9,26 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
- * Created by lorne on 2017/7/1.
+ * servlet 容器监听器 区别与 spring ioc 容器
+ *
+ * @author lorne
+ * @date 2017/7/1
  */
-
 @Component
 public class ServerListener implements ServletContextListener {
 
-    private WebApplicationContext springContext;
-
-
     private InitService initService;
 
+    /**
+     * 主要是设置常量信息，和启动netty
+     */
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        springContext = WebApplicationContextUtils
+        WebApplicationContext springContext = WebApplicationContextUtils
                 .getWebApplicationContext(event.getServletContext());
         initService = springContext.getBean(InitService.class);
         initService.start();
     }
-
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {

@@ -1,9 +1,5 @@
 package com.codingapi.tm.netty.handler;
 
-/**
- * Created by lorne on 2017/6/29.
- */
-
 import com.alibaba.fastjson.JSONObject;
 import com.codingapi.tm.framework.utils.SocketManager;
 import com.codingapi.tm.framework.utils.SocketUtils;
@@ -23,21 +19,20 @@ import java.util.concurrent.Executor;
 
 /**
  * Handles a server-side channel.
+ *
+ * @author wangyijie
  */
 
 @ChannelHandler.Sharable
 public class TxCoreServerHandler extends ChannelInboundHandlerAdapter { // (1)
 
-    private NettyService nettyService;
-
-
     private Logger logger = LoggerFactory.getLogger(TxCoreServerHandler.class);
 
+    private NettyService nettyService;
 
     private Executor threadPool;
 
-
-    public TxCoreServerHandler(Executor threadPool,NettyService nettyService) {
+    public TxCoreServerHandler(Executor threadPool, NettyService nettyService) {
         this.threadPool = threadPool;
         this.nettyService = nettyService;
     }
@@ -45,39 +40,40 @@ public class TxCoreServerHandler extends ChannelInboundHandlerAdapter { // (1)
     @Override
     public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
         final String json = SocketUtils.getJson(msg);
-        logger.debug("request->"+json);
+        logger.debug("request->" + json);
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                service(json,ctx);
+                service(json, ctx);
             }
         });
     }
 
-    private void service(String json,ChannelHandlerContext ctx){
+    /**
+     * 处理tm 请求
+     */
+    private void service(String json, ChannelHandlerContext ctx) {
         if (StringUtils.isNotEmpty(json)) {
             JSONObject jsonObject = JSONObject.parseObject(json);
             String action = jsonObject.getString("a");
             String key = jsonObject.getString("k");
             JSONObject params = JSONObject.parseObject(jsonObject.getString("p"));
             String channelAddress = ctx.channel().remoteAddress().toString();
+            // 根据action调用不同的service处理请求
+            IActionService actionService = nettyService.getActionService(action);
 
-            IActionService actionService =  nettyService.getActionService(action);
-
-            String res = actionService.execute(channelAddress,key,params);
+            String res = actionService.execute(channelAddress, key, params);
 
             JSONObject resObj = new JSONObject();
             resObj.put("k", key);
             resObj.put("d", res);
 
-            SocketUtils.sendMsg(ctx,resObj.toString());
-
+            SocketUtils.sendMsg(ctx, resObj.toString());
         }
     }
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-
         //是否到达最大上线连接数
         if (SocketManager.getInstance().isAllowConnection()) {
             SocketManager.getInstance().addClient(ctx.channel());
@@ -89,7 +85,6 @@ public class TxCoreServerHandler extends ChannelInboundHandlerAdapter { // (1)
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-
         SocketManager.getInstance().removeClient(ctx.channel());
         String modelName = ctx.channel().remoteAddress().toString();
         SocketManager.getInstance().outLine(modelName);

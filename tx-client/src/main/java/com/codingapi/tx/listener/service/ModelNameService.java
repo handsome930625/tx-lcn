@@ -1,7 +1,10 @@
 package com.codingapi.tx.listener.service;
 
 /**
- * Created by lorne on 2017/7/12.
+ * 模块信息
+ *
+ * @author lorne
+ * @date 2017/7/12
  */
 public interface ModelNameService {
 

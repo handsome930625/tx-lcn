@@ -30,20 +30,17 @@ public class TransactionHandler extends ChannelInboundHandlerAdapter {
 
     private Executor threadPool;
 
-
     public TransactionHandler(Executor threadPool,NettyControlService nettyControlService, int delay) {
         this.threadPool = threadPool;
         this.nettyControlService = nettyControlService;
 
         SocketManager.getInstance().setDelay(delay);
-
         //心跳包
         JSONObject heartJo = new JSONObject();
         heartJo.put("a", "h");
         heartJo.put("k", "h");
         heartJo.put("p", "{}");
         heartJson = heartJo.toString();
-
     }
 
 
@@ -109,7 +106,7 @@ public class TransactionHandler extends ChannelInboundHandlerAdapter {
                 //表示已经多久没有收到数据了
                 //ctx.close();
             } else if (event.state() == IdleState.WRITER_IDLE) {
-                //表示已经多久没有发送数据了
+                // 表示已经多久没有发送数据了
                 SocketUtils.sendMsg(ctx, heartJson);
                 logger.debug("hart data --->" + heartJson);
             } else if (event.state() == IdleState.ALL_IDLE) {

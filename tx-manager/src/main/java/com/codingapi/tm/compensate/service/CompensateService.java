@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * create by lorne on 2017/11/11
+ * @author wangyijie
  */
 public interface CompensateService {
 
@@ -31,5 +32,5 @@ public interface CompensateService {
 
     boolean delCompensate(String path);
 
-    TxGroup  getCompensateByGroupId(String groupId);
+    TxGroup getCompensateByGroupId(String groupId);
 }

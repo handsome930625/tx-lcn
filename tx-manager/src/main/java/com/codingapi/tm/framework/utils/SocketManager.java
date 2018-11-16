@@ -9,28 +9,27 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Created by lorne on 2017/6/30.
+ *
+ * @author lorne
+ * @date 2017/6/30
  */
 public class SocketManager {
-
     /**
      * 最大连接数
      */
     private int maxConnection = Constants.maxConnection;
-
     /**
      * 当前连接数
      */
     private int nowConnection;
-
     /**
      * 允许连接请求 true允许 false拒绝
      */
     private boolean allowConnection = true;
 
-    private List<Channel> clients = null;
+    private List<Channel> clients;
 
-    private Map<String,String> lines = null;
+    private Map<String,String> lines;
 
     private static SocketManager manager = null;
 
@@ -45,7 +44,6 @@ public class SocketManager {
         return manager;
     }
 
-
     public Channel getChannelByModelName(String name) {
         for (Channel channel : clients) {
             String modelName = channel.remoteAddress().toString();
@@ -58,8 +56,8 @@ public class SocketManager {
     }
 
     private SocketManager() {
-        clients = new CopyOnWriteArrayList<Channel>();
-        lines = new ConcurrentHashMap<String, String>();
+        clients = new CopyOnWriteArrayList<>();
+        lines = new ConcurrentHashMap<>();
     }
 
     public void addClient(Channel client) {
@@ -75,7 +73,6 @@ public class SocketManager {
 
         allowConnection = (maxConnection != nowConnection);
     }
-
 
     public int getMaxConnection() {
         return maxConnection;

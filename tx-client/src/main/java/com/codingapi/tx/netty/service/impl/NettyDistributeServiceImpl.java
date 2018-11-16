@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by lorne on 2017/6/30.
+ *
+ * @author lorne
+ * @date 2017/6/30
  */
 @Service
 public class NettyDistributeServiceImpl implements NettyDistributeService {
@@ -59,7 +61,6 @@ public class NettyDistributeServiceImpl implements NettyDistributeService {
             logger.info(Constants.txServer.toString());
             connectCont = 0;
         }
-
     }
 
 }

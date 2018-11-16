@@ -11,7 +11,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
- * Created by lorne on 2017/7/5.
+ * @author lorne
+ * @date 2017/7/5
  */
 
 @EnableAutoConfiguration
@@ -22,8 +23,7 @@ public class RedisConfig {
     @Bean
     @ConfigurationProperties(prefix = "spring.redis")
     public JedisPoolConfig getRedisConfig() {
-        JedisPoolConfig config = new JedisPoolConfig();
-        return config;
+        return new JedisPoolConfig();
     }
 
     @Bean

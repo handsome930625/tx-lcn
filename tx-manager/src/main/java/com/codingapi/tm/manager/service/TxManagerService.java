@@ -8,14 +8,12 @@ import com.codingapi.tm.netty.model.TxGroup;
 
 public interface TxManagerService {
 
-
     /**
      * 创建事物组
      *
      * @param groupId 补偿事务组id
      */
     TxGroup createTransactionGroup(String groupId);
-
 
     /**
      * 添加事务组子对象
@@ -25,7 +23,6 @@ public interface TxManagerService {
 
     TxGroup addTransactionGroup(String groupId, String taskId,int isGroup, String channelAddress, String methodStr);
 
-
     /**
      * 关闭事务组
      * @param groupId 事务组id
@@ -34,16 +31,13 @@ public interface TxManagerService {
      */
     int closeTransactionGroup(String groupId,int state);
 
-
     void dealTxGroup(TxGroup txGroup, boolean hasOk );
-
 
     /**
      * 删除事务组
      * @param txGroup 事务组
      */
     void deleteTxGroup(TxGroup txGroup);
-
 
     /**
      * 获取事务组信息
@@ -52,14 +46,12 @@ public interface TxManagerService {
      */
     TxGroup getTxGroup(String groupId);
 
-
     /**
      * 获取事务组的key
      * @param groupId 事务组id
      * @return key
      */
     String getTxGroupKey(String groupId);
-
 
     /**
      * 检查事务组数据
@@ -68,7 +60,6 @@ public interface TxManagerService {
      * @return  本次请求的是否提交 1提交 0回滚
      */
     int cleanNotifyTransaction(String groupId, String taskId);
-
 
     /**
      * 设置强制回滚事务

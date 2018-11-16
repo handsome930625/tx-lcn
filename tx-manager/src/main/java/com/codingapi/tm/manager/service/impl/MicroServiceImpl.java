@@ -84,7 +84,7 @@ public class MicroServiceImpl implements MicroService {
             try {
                 TxState state = restTemplate.getForObject(url + "/tx/manager/state", TxState.class);
                 states.add(state);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
         }
